@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom' // <-- Impor ini
 import App from './App.jsx'
-import './index.css' // <-- BARIS INI WAJIB ADA
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter> {/* <-- Bungkus App dengan ini */}
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
 )
