@@ -1,5 +1,6 @@
 import React from 'react';
 import { products } from '../data/products'; // Menggunakan data lokal untuk Home (atau ubah ke Supabase nanti)
+import { Link } from 'react-router-dom';
 
 // 1. TANGKAP PROPS addToCart DARI APP.JSX
 const Home = ({ addToCart }) => {
@@ -8,20 +9,32 @@ const Home = ({ addToCart }) => {
   return (
     <div className="bg-[#F7F3EF] font-sans text-[#28282B] min-h-screen">
       
-      {/* --- HERO SECTION --- */}
-      <header className="relative w-full h-[650px] bg-[#4E433C] flex items-center px-12 md:px-24 overflow-hidden">
-        {/* Lapisan Gradasi Estetis pada Gambar Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent z-10"></div>
-        <div className="absolute right-0 top-0 w-full md:w-3/5 h-full bg-cover bg-center opacity-70 transition-transform duration-700 hover:scale-102" style={{ backgroundImage: "url('/public/logo.png')" }}></div>
+      {/* --- HERO VIDEO SECTION --- */}
+      <header className="relative w-full h-[85vh] md:h-screen overflow-hidden flex items-center px-12 md:px-24">
         
+        {/* Tag Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/videos/promo.mp4" type="video/mp4" />
+        </video>
+
+        {/* Lapisan Gradasi Gelap (Penting agar teks putih tetap terbaca di atas video yang bergerak) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10"></div>
+        
+        {/* Konten Teks Anda (Dipertahankan) */}
         <div className="relative z-20 max-w-xl text-white">
-          <h1 className="font-serif text-5xl md:text-7xl font-light leading-[1.15] mb-6 tracking-wide drop-shadow-xs">
+          <h1 className="font-serif text-5xl md:text-7xl font-light leading-[1.15] mb-6 tracking-wide drop-shadow-lg">
             Find Your Solmate<br /><span className="italic font-normal">In Every Step</span>
           </h1>
-          <p className="mb-10 text-[#EBE1D7] text-sm md:text-base font-light tracking-wide leading-relaxed max-w-sm">
+          <p className="mb-10 text-[#EBE1D7] text-sm md:text-base font-light tracking-wide leading-relaxed max-w-sm drop-shadow-md">
             Simple, comfortable, and meticulously crafted to match your everyday movement.
           </p>
-          <button className="bg-[#EBE1D7] text-[#4E433C] text-[11px] font-medium tracking-[0.25em] uppercase px-10 py-4 rounded-none hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:-translate-y-0.5">
+          <button onClick={() => window.location.href='/shop'} className="bg-[#EBE1D7] text-[#4E433C] text-[11px] font-medium tracking-[0.25em] uppercase px-10 py-4 rounded-none hover:bg-black hover:text-white transition-all duration-300 shadow-xl hover:-translate-y-0.5">
             SHOP NOW
           </button>
         </div>
