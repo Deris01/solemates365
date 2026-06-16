@@ -1,4 +1,4 @@
-// 1. Load Environment Variables (Harus paling atas)
+// 1. Load Environment Variables
 require('dotenv').config();
 
 const express = require('express');
@@ -9,9 +9,7 @@ const { createClient } = require('@supabase/supabase-js');
 // 2. Inisialisasi Aplikasi Express
 const app = express();
 
-// 3. Konfigurasi Port & CORS untuk Cloud
-const PORT = process.env.PORT || 5000;
-
+// 3. Konfigurasi CORS (Izinkan Netlify dan Localhost)
 app.use(cors({ origin: ['http://localhost:5173', 'https://solemates365.netlify.app'] })); 
 app.use(express.json());
 
@@ -43,9 +41,6 @@ app.post('/api/payment', (req, res) => {
 // Endpoint B: Webhook Midtrans (Penerima Notifikasi)
 app.post('/api/webhook', async (req, res) => {
     try {
-        // (Opsional) Keamanan dasar bisa ditambahkan di sini menggunakan authHeader
-        const authHeader = req.headers['authorization'];
-        
         const notificationJson = req.body;
         const statusResponse = await snap.transaction.notification(notificationJson);
         const orderId = statusResponse.order_id;
@@ -54,7 +49,6 @@ app.post('/api/webhook', async (req, res) => {
 
         console.log(`[WEBHOOK] Order ID: ${orderId} | Status: ${transactionStatus}`);
 
-        // Format order_id kita adalah SOLEA-[ID_DB]-[TIMESTAMP]
         const parts = orderId.split('-'); 
         const dbOrderId = parseInt(parts[1], 10);
 
@@ -65,7 +59,6 @@ app.post('/api/webhook', async (req, res) => {
             finalStatus = 'FAILED';
         }
 
-        // Update status di Supabase
         const { error } = await supabase
             .from('orders')
             .update({ status: finalStatus })
@@ -74,7 +67,6 @@ app.post('/api/webhook', async (req, res) => {
         if (error) throw error;
         console.log(`[DB] Order ${dbOrderId} status updated to ${finalStatus}`);
 
-        // Jika LUNAS, kurangi stok
         if (finalStatus === 'PAID') {
             const { data: items } = await supabase
                 .from('order_items')
@@ -105,7 +97,5 @@ app.post('/api/webhook', async (req, res) => {
     }
 });
 
-// 6. Jalankan Server
-app.listen(PORT, () => {
-    console.log(`Server Backend aktif dan berjalan di port ${PORT}`);
-});
+// 6. EKSPOR APLIKASI UNTUK VERCEL SERVERLESS (PENGGANTI APP.LISTEN)
+module.exports = app;
