@@ -67,7 +67,7 @@ const Checkout = ({ clearCart }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          order_id: `SOLEA-${newOrderId}-${Date.now()}`, // Midtrans butuh ID unik
+          order_id: `Solmates365-${newOrderId}-${Date.now()}`, // Midtrans butuh ID unik
           gross_amount: cartTotal,
           customer_name: formData.name,
           customer_email: formData.email
