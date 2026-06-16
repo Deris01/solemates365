@@ -61,7 +61,7 @@ const Checkout = ({ clearCart }) => {
       if (itemsError) throw itemsError;
 
       // 3. Minta Token Pembayaran ke Backend Node.js Anda
-      const response = await fetch('http://localhost:5000/api/payment', {
+      const response = await fetch('https://solemates365.vercel.app/api/payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
