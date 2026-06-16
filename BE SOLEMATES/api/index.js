@@ -26,7 +26,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 // --- ROUTING / ENDPOINTS ---
 
 // Endpoint A: Pembayaran (Minta Token Snap)
-app.post('/api/payment', (req, res) => {
+app.post('/payment', (req, res) => {
     const { order_id, gross_amount, customer_name, customer_email } = req.body;
     let parameter = {
         "transaction_details": { "order_id": order_id, "gross_amount": gross_amount },
@@ -39,7 +39,7 @@ app.post('/api/payment', (req, res) => {
 });
 
 // Endpoint B: Webhook Midtrans (Penerima Notifikasi)
-app.post('/api/webhook', async (req, res) => {
+app.post('/webhook', async (req, res) => {
     try {
         const notificationJson = req.body;
         const statusResponse = await snap.transaction.notification(notificationJson);
