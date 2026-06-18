@@ -12,6 +12,7 @@ function App() {
   // 1. STATE GLOBAL DIKEMBALIKAN KE LEVEL TERATAS
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -89,11 +90,14 @@ function App() {
       {/* --- GLOBAL NAVBAR --- */}
       <nav className="sticky top-0 w-full bg-[#F7F3EF]/90 backdrop-blur-md flex justify-between items-center px-6 md:px-12 py-5 z-50 border-b border-[#EBE1D7]/60">
         <Link to="/" className="font-serif text-2xl tracking-[0.2em] font-semibold text-[#28282B]">Solemates365</Link>
+        
+        {/* Desktop Menu (Sembunyi di Mobile) */}
         <div className="hidden md:flex space-x-10 text-[11px] font-medium tracking-[0.2em] text-gray-400">
           <Link to="/" className="hover:text-black transition-colors">HOME</Link>
           <Link to="/shop" className="hover:text-black transition-colors">SHOP</Link>
           <Link to="/about" className="hover:text-black transition-colors">ABOUT US</Link>
         </div>
+        
         <div className="flex space-x-6 items-center text-gray-700">
           <button className="hover:text-black transition-colors text-sm focus:outline-none">🔍</button>
           {/* KERANJANG HIDUP */}
@@ -105,8 +109,28 @@ function App() {
               </span>
             )}
           </button>
+          
+          {/* TOMBOL HAMBURGER MOBILE (Sembunyi di Desktop) */}
+          <button 
+            className="md:hidden flex items-center text-gray-700 hover:text-black focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Logika ikon: jika buka jadi silang (X), jika tutup jadi garis tiga */}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}></path>
+            </svg>
+          </button>
         </div>
       </nav>
+
+      {/* --- PANEL DROPDOWN MOBILE --- */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden sticky top-[73px] w-full bg-[#F7F3EF]/95 backdrop-blur-md border-b border-[#EBE1D7]/60 z-40 shadow-sm flex flex-col items-center py-6 space-y-6 text-xs font-medium tracking-[0.2em] text-gray-600">
+          <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-black transition-colors w-full text-center block">HOME</Link>
+          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-black transition-colors w-full text-center block">SHOP</Link>
+          <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-black transition-colors w-full text-center block">ABOUT US</Link>
+        </div>
+      )}
 
       {/* --- AREA KONTEN DINAMIS --- */}
    <Routes>
