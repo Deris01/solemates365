@@ -13,6 +13,17 @@ function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault(); // Mencegah reload halaman
+    if (searchQuery.trim()) {
+      setIsSearchOpen(false); // Tutup bar setelah enter
+      navigate(`/shop?q=${searchQuery}`); // Lempar ke halaman shop dengan query
+      setSearchQuery(''); // Kosongkan input
+    }
+  };
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -99,7 +110,10 @@ function App() {
         </div>
         
         <div className="flex space-x-6 items-center text-gray-700">
-          <button className="hover:text-black transition-colors text-sm focus:outline-none">🔍</button>
+          {/* TOMBOL PENCARIAN AKTIF */}
+          <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="hover:text-black transition-colors text-sm focus:outline-none">
+            🔍
+          </button>
           {/* KERANJANG HIDUP */}
           <button onClick={() => setIsCartOpen(true)} className="relative hover:text-black transition-colors text-base focus:outline-none">
             🛍️
@@ -122,6 +136,25 @@ function App() {
           </button>
         </div>
       </nav>
+
+      {/* --- PANEL PENCARIAN (SEARCH BAR) --- */}
+      {isSearchOpen && (
+        <div className="absolute top-full left-0 w-full bg-white border-b border-[#EBE1D7] py-6 px-6 md:px-12 z-40 shadow-md">
+          <form onSubmit={handleSearch} className="flex max-w-2xl mx-auto items-center">
+            <input 
+              type="text" 
+              placeholder="Cari produk (misal: Raven Lace)..." 
+              className="flex-1 bg-[#F7F3EF] border border-[#D6C8B3] text-[#28282B] text-xs md:text-sm py-4 px-6 focus:outline-none focus:border-[#8B6E5A] transition-colors"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              autoFocus
+            />
+            <button type="submit" className="bg-[#28282B] text-white px-8 py-4 text-xs font-semibold tracking-widest uppercase hover:bg-black transition-colors">
+              CARI
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* --- PANEL DROPDOWN MOBILE --- */}
       {isMobileMenuOpen && (
